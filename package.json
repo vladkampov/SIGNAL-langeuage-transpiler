@@ -1,0 +1,15 @@
+{
+  "name": "signal-language-transpiler",
+  "version": "1.0.0",
+  "description": "Course work for Software Engineering. Transpiler for SIGNAL programming language.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladkampov/SIGNAL-language-transpiler.git"
+  },
+  "author": "Vlad Kampov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vladkampov/SIGNAL-language-transpiler/issues"
+  },
+  "homepage": "https://github.com/vladkampov/SIGNAL-language-transpiler#readme"
+}
