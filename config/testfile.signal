@@ -1,0 +1,11 @@
+PROCEDURE LAB 
+( 
+    TEST1: SIGNAL ;
+    TEST2: INTEGER ;
+); 
+VAR 
+    TEST3: INTEGER;
+    TEST4: FLOAT; 
+BEGIN 
+
+END

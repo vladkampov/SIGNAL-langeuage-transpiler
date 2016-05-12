@@ -1,0 +1,53 @@
+{
+    "gramm": [
+        "<signal-program> --> <program>",
+        "<program> --> PROCEDURE <procedure-identifier><parameters-list> ; <block> ;",
+        "<block> --> <declarations> BEGIN <statements-list> END",
+        "<statements-list> --> <empty>",
+        "<parameters-list> --> ( <declarations-list> ) | <empty>",
+        "<declarations> --> <variable-declarations>",
+        "<variable-declarations> --> VAR <declarations-list>  |<empty>",
+        "<declarations-list> --> <declaration> <declarations-list> |<empty>",
+        "<declaration> --><variable-identifier><identifiers-list>:<attribute><attributes-list> ;",
+        "<identifiers-list> --> , <variable-identifier> <identifiers-list> |<empty>",
+        "<attributes-list> --> <attribute> <attributes-list> |<empty>",
+        "<attribute> --> SIGNAL     |COMPLEX    |INTEGER    |FLOAT      |BLOCKFLOAT |EXT",
+        "<variable-identifier> --> <identifier>",
+        "<procedure-identifier> --> <identifier>",
+        "<identifier> --> <letter><string>",
+        "<string> --> <letter><string> |<digit><string> |<empty>",
+        "<letter> --> A | B | C | D | ... | Z"
+    ],
+    "keywords": [
+        "400",
+        "PROCEDURE", 
+        "BEGIN",
+        "END",
+        "VAR",
+        "SIGNAL",
+        "COMPLEX",
+        "INTEGER",
+        "FLOAT",
+        "BLOCKFLOAT",
+        "EXT"
+    ],
+    "identifiers": "1000",
+    "delimiters": [
+        "0", 
+        "+",
+        "-",
+        ".",
+        "/", 
+        "\\",
+        ":",
+        ";",
+        "=",
+        ")",
+        "("
+    ],
+    "whitespaces": [
+        " ",
+        "\n",
+        "\t"
+    ]
+}

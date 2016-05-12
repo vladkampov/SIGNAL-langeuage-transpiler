@@ -11,5 +11,18 @@
   "bugs": {
     "url": "https://github.com/vladkampov/SIGNAL-language-transpiler/issues"
   },
-  "homepage": "https://github.com/vladkampov/SIGNAL-language-transpiler#readme"
+  "scripts": {
+    "start": "node build/js/app.js",
+    "watch": "grunt watch",
+    "clean": "grunt clean"
+  },
+  "homepage": "https://github.com/vladkampov/SIGNAL-language-transpiler#readme",
+  "devDependencies": {
+    "chalk": "^1.1.3",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "path": "^0.12.7"
+  }
 }
