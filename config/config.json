@@ -19,7 +19,7 @@
         "<letter> --> A | B | C | D | ... | Z"
     ],
     "keywords": [
-        "400",
+        400,
         "PROCEDURE", 
         "BEGIN",
         "END",
@@ -31,9 +31,9 @@
         "BLOCKFLOAT",
         "EXT"
     ],
-    "identifiers": "1000",
+    "identifiers": 1000,
     "delimiters": [
-        "0", 
+        0, 
         "+",
         "-",
         ".",
