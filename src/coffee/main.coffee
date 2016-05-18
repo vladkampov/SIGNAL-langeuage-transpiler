@@ -1,6 +1,6 @@
-Lexer program
+Lexer = new lexAnalyzer lexemes: lexemes, identifiers: identifiers, config: config, program: program
 
-printTable lexemes, chalk.yellow.bold "Lexical analyzer output"
-printTable identifiers, chalk.yellow.bold "Identifiers table"
+# printTable lexemes, chalk.yellow.bold "Lexical analyzer output"
+# printTable identifiers, chalk.yellow.bold "Identifiers table"
 
-SyntaxAnalyzer lexemes
+Syntaxer = new syntaxAnalyzer lexemes: lexemes
