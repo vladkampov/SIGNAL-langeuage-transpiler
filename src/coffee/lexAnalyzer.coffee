@@ -1,6 +1,6 @@
 class lexAnalyzer
     constructor: (@attr)-> 
-            @analyze @attr.program
+        @analyze @attr.program
 
     analyzeLexeme: (lexeme, pos)->
         if @attr.config.keywords.indexOf(lexeme) >= 0
@@ -30,6 +30,9 @@ class lexAnalyzer
             if text[i] is undefined
                 break
             else
+                # TODO: This is a shit, Mr Wayne.
+                # We need to improve this
+                # Some of Delimiters goes before its spots
                 if @attr.config.whitespaces.toString().indexOf(text[i]) is -1
                     if @attr.config.delimiters.toString().indexOf(text[i]) is -1
                         temp += text[i]

@@ -1,27 +1,38 @@
 class syntaxAnalyzer
     constructor: (@attr)->
-        @analyze @attr.lexemes
+        @analyze()
 
-    scan: (lexemesArrs)->
-        @current = lexemesArrs.shift()
+    scan: ()->
+        @currentLex = @attr.lexemes.shift()
 
-    analyze: (lexemesArr)->
-        @scan lexemesArr
+    analyze: ()->
+        @scan()
+        @programBlock()
 
     programBlock: ()->
-        # TODO: check "PROCEDURE"
+        if @currentLex.lexeme isnt "PROCEDURE"
+            throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+
+        @scan()
         @procedureIdentifierBlock()
+        @scan()
         @parametersListBlock()
         # TODO: check ";"
-        @block()
+        # @block()
         # TODO: check ";"
 
     procedureIdentifierBlock: ()->
+        @identifierBlock()
 
     parametersListBlock: ()->
-        # TODO: check "("
-        @declarationsListBlock()
-        # TODO: check ")"
+        if @currentLex.lexeme isnt "("
+            throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+
+        @scan()
+        console.log @currentLex
+        # @declarationsListBlock()
+        # if @currentLex.lexeme isnt ")"
+        #     throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
         # or empty 
 
     block: ()->
@@ -71,23 +82,22 @@ class syntaxAnalyzer
     variableIdentifierBlock: ()->
         @identifierBlock()
 
-    procedureIdentifierBlock: ()->
-        @identifierBlock()
-
     identifierBlock: ()->
-        @letter()
-        @string()
+        @letter @currentLex.lexeme.slice 0, 1
+        @string @currentLex.lexeme.slice 1, @currentLex.lexeme.length
 
-    letter: ()->
-        # one of letter
+    letter: (char)->
+        if !char.match(/[a-z]/i)
+            throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
-    digit: ()->
-        # one of digit
+    digit: (char)->
+        if !char.match(/[0-9]/i)
+            throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
-    string: ()->
-        @letter()
-        @string()
-        # or
-        @digit()
-        @string()
-        # or empty
+    string: (str)->
+        if str isnt ""
+            if parseInt(str)
+                @digit str.slice 0, 1
+            else
+                @letter str.slice 0, 1
+            @string str.slice 1, str.length

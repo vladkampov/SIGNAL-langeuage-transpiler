@@ -12,7 +12,7 @@
     "url": "https://github.com/vladkampov/SIGNAL-language-transpiler/issues"
   },
   "scripts": {
-    "start": "node build/js/app.js",
+    "start": "node --stack-size=32000 build/js/app.js",
     "watch": "grunt watch",
     "clean": "grunt clean"
   },
