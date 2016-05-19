@@ -1,5 +1,14 @@
+class tree
+    constructor: (@attr)->
+        @signalProgram = {}
+        console.log @
+
 class syntaxAnalyzer
     constructor: (@attr)->
+        @tree = signalProgram: {} 
+        @config = @attr.config
+        @currentBranch = @tree
+
         @analyze()
 
     scan: ()->
@@ -21,8 +30,9 @@ class syntaxAnalyzer
             throw new Error chalk.red.bold "program: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
         @scan()
         @block()
-        # if @currentLex.lexeme isnt ";"
-        #     throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        @scan()
+        if @currentLex.lexeme isnt ";"
+            throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
     procedureIdentifierBlock: ()->
         @identifierBlock()
@@ -57,7 +67,7 @@ class syntaxAnalyzer
 
     declarationsListBlock: ()->
         @scan()
-        if @currentLex.lexeme isnt ")" and @attr.config.keywords.indexOf(@currentLex.lexeme) is -1
+        if @currentLex.lexeme isnt ")" and @config.keywords.indexOf(@currentLex.lexeme) is -1
             @declarationBlock()
             @declarationsListBlock()
 
@@ -86,7 +96,7 @@ class syntaxAnalyzer
             @attributeListBlock()
 
     attributeBlock: ()->
-        if @attr.config.keywords.indexOf(@currentLex.lexeme) is -1
+        if @config.keywords.indexOf(@currentLex.lexeme) is -1
             throw new Error chalk.red.bold "attribute: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
     variableIdentifierBlock: ()->

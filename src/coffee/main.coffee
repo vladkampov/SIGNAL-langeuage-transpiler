@@ -3,4 +3,5 @@ Lexer = new lexAnalyzer lexemes: lexemes, identifiers: identifiers, config: conf
 # printTable lexemes, chalk.yellow.bold "Lexical analyzer output"
 # printTable identifiers, chalk.yellow.bold "Identifiers table"
 
-Syntaxer = new syntaxAnalyzer lexemes: lexemes, config: config
+Tree = new tree
+Syntaxer = new syntaxAnalyzer lexemes: lexemes, config: config, tree: Tree
