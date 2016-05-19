@@ -1,6 +1,6 @@
 PROCEDURE LAB 
 ( 
-    TEST1: SIGNAL ;
+    TEST1, TST5: SIGNAL ;
     TEST2: INTEGER ;
 ); 
 VAR 

@@ -41,6 +41,8 @@ class lexAnalyzer
                 else
                     if temp
                         @attr.lexemes.push lexeme: temp, code: @analyzeLexeme(temp, pos), row: pos.row, column: pos.column
+                        if @attr.config.delimiters.toString().indexOf(text[i]) isnt -1
+                            @attr.lexemes.push lexeme: text[i], code: @analyzeLexeme(text[i], pos), row: pos.row, column: pos.column
                     temp = ''
                     @newLine text[i], pos
             i++

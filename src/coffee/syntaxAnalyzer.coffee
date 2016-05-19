@@ -17,9 +17,11 @@ class syntaxAnalyzer
         @procedureIdentifierBlock()
         @scan()
         @parametersListBlock()
-        # TODO: check ";"
+        # if @currentLex.lexeme isnt ";"
+        #     throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
         # @block()
-        # TODO: check ";"
+        # if @currentLex.lexeme isnt ";"
+        #     throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
     procedureIdentifierBlock: ()->
         @identifierBlock()
@@ -29,46 +31,48 @@ class syntaxAnalyzer
             throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
         @scan()
-        console.log @currentLex
-        # @declarationsListBlock()
+        @declarationsListBlock()
+
         # if @currentLex.lexeme isnt ")"
         #     throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
         # or empty 
 
     block: ()->
-        @declarationsBlock()
+        # @declarationsBlock()
         # TODO: check "BEGIN"
-        @statementsListBlock()
+        # @statementsListBlock()
         # TODO: check "END"
 
     statementsListBlock: ()->
         # always empty
 
     declarationsBlock: ()->
-        @variableDeclarationsBlock()
+        # @variableDeclarationsBlock()
     
     variableDeclarationsBlock: ()->
         # TODO: check "VAR"
-        @declarationsListBlock()
+        # @declarationsListBlock()
         # or empty
 
     declarationsListBlock: ()->
         @declarationBlock()
-        @declarationsListBlock()
+        # @declarationsListBlock()
         # or empty
 
     declarationBlock: ()->
         @variableIdentifierBlock()
+        @scan()
         @identifiersListBlock()
         # TODO: check ":"
-        @attributeBlock()
-        @attributeListBlock()
+        # @attributeBlock()
+        # @attributeListBlock()
         # TODO: check ";"
     
     identifiersListBlock: ()->
+        console.log @currentLex
         # TODO: check ","
-        @variableIdentifierBlock()
-        @identifiersListBlock()
+        # @variableIdentifierBlock()
+        # @identifiersListBlock()
         # or empty
 
     attributeListBlock: ()->
