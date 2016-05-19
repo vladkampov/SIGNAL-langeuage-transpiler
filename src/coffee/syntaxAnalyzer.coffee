@@ -18,8 +18,9 @@ class syntaxAnalyzer
         @scan()
         @parametersListBlock()
         if @currentLex.lexeme isnt ";"
-            throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
-        # @block()
+            throw new Error chalk.red.bold "program: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        @scan()
+        @block()
         # if @currentLex.lexeme isnt ";"
         #     throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
@@ -36,25 +37,27 @@ class syntaxAnalyzer
             @scan()
 
     block: ()->
-        # @declarationsBlock()
-        # TODO: check "BEGIN"
-        # @statementsListBlock()
-        # TODO: check "END"
+        @declarationsBlock()
+        if @currentLex.lexeme isnt "BEGIN"
+            throw new Error chalk.red.bold "block: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        @scan()
+        @statementsListBlock()
+        if @currentLex.lexeme isnt "END"
+            throw new Error chalk.red.bold "block: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
 
     statementsListBlock: ()->
-        # always empty
+        return "OK, its always empty"
 
     declarationsBlock: ()->
-        # @variableDeclarationsBlock()
+        @variableDeclarationsBlock()
     
     variableDeclarationsBlock: ()->
-        # TODO: check "VAR"
-        # @declarationsListBlock()
-        # or empty
+        if @currentLex.lexeme is "VAR"
+            @declarationsListBlock()
 
     declarationsListBlock: ()->
         @scan()
-        if @currentLex.lexeme isnt ")"
+        if @currentLex.lexeme isnt ")" and @attr.config.keywords.indexOf(@currentLex.lexeme) is -1
             @declarationBlock()
             @declarationsListBlock()
 
@@ -81,7 +84,6 @@ class syntaxAnalyzer
         if @currentLex.lexeme isnt ";"
             @attributeBlock()
             @attributeListBlock()
-        # or empty
 
     attributeBlock: ()->
         if @attr.config.keywords.indexOf(@currentLex.lexeme) is -1
