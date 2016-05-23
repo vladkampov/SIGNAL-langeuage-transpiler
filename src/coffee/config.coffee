@@ -2,6 +2,7 @@ fs = require 'fs'
 path = require 'path'
 chalk = require 'chalk'
 json_tb = require 'json-table'
+prettyjson = require 'prettyjson'
 
 configFile = path.join(__dirname, '../..', 'config', 'config.json')
 testFile = path.join(__dirname, '../..', 'config', 'testfile.signal')

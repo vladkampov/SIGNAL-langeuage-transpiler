@@ -1,13 +1,11 @@
 class tree
     constructor: (@attr)->
         @signalProgram = {}
-        console.log @
 
 class syntaxAnalyzer
     constructor: (@attr)->
-        @tree = signalProgram: {} 
+        @tree = {} 
         @config = @attr.config
-        @currentBranch = @tree
 
         @analyze()
 
@@ -16,108 +14,134 @@ class syntaxAnalyzer
 
     analyze: ()->
         @scan()
-        @programBlock()
+        return @tree = signalProgram: @programBlock()
 
     programBlock: ()->
-        if @currentLex.lexeme isnt "PROCEDURE"
+        obj = []
+        if @currentLex.lexeme isnt @config.keywords[1]
             throw new Error chalk.red.bold "program: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
-
+        obj.push @currentLex.lexeme
         @scan()
-        @procedureIdentifierBlock()
+        obj.push procedureIdentifierBlock: @procedureIdentifierBlock()
         @scan()
-        @parametersListBlock()
-        if @currentLex.lexeme isnt ";"
+        obj.push parametersListBlock: @parametersListBlock()
+        @scan()
+        if @currentLex.lexeme isnt @config.delimiters[3]
             throw new Error chalk.red.bold "program: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
         @scan()
-        @block()
+        obj.push block: @block()
         @scan()
-        if @currentLex.lexeme isnt ";"
+        if @currentLex.lexeme isnt @config.delimiters[3]
             throw new Error chalk.red.bold "Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        return obj
 
     procedureIdentifierBlock: ()->
         @identifierBlock()
+        return @currentLex.lexeme
 
     parametersListBlock: ()->
-        if @currentLex.lexeme is "("
-            @declarationsListBlock()
+        obj = {}
+        if @currentLex.lexeme is @config.delimiters[1]
+            obj = @declarationsListBlock {}
 
-            if @currentLex.lexeme isnt ")"
+            if @currentLex.lexeme isnt @config.delimiters[2]
                 throw new Error chalk.red.bold "parametersList: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
-
-            @scan()
+            return obj
 
     block: ()->
-        @declarationsBlock()
-        if @currentLex.lexeme isnt "BEGIN"
+        obj = []
+        obj.push declarationsBlock: @declarationsBlock()
+        if @currentLex.lexeme isnt @config.keywords[2]
             throw new Error chalk.red.bold "block: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        obj.push @currentLex.lexeme
         @scan()
-        @statementsListBlock()
-        if @currentLex.lexeme isnt "END"
+        obj.push statementsListBlock: @statementsListBlock()
+        if @currentLex.lexeme isnt @config.keywords[3]
             throw new Error chalk.red.bold "block: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        obj.push @currentLex.lexeme
+        return obj
 
     statementsListBlock: ()->
-        return "OK, its always empty"
+        return {}
 
     declarationsBlock: ()->
-        @variableDeclarationsBlock()
+        return @variableDeclarationsBlock()
     
     variableDeclarationsBlock: ()->
-        if @currentLex.lexeme is "VAR"
-            @declarationsListBlock()
+        obj = []
+        if @currentLex.lexeme is @config.keywords[4]
+            obj.push @currentLex.lexeme, declarationsListBlock: @declarationsListBlock {}
+            return obj
+        else
+            return {}
 
-    declarationsListBlock: ()->
+    declarationsListBlock: (obj)->
         @scan()
-        if @currentLex.lexeme isnt ")" and @config.keywords.indexOf(@currentLex.lexeme) is -1
-            @declarationBlock()
-            @declarationsListBlock()
+        if @currentLex.lexeme isnt @config.delimiters[2] and @config.keywords.indexOf(@currentLex.lexeme) is -1
+            obj['declarationBlock'] = @declarationBlock()
+            obj['declarationsListBlock'] = @declarationsListBlock {}
+            return obj
 
     declarationBlock: ()->
-        @variableIdentifierBlock()
-        @identifiersListBlock()
-        if @currentLex.lexeme isnt ":"
-            throw new Error chalk.red.bold "declaration: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
-        @scan()
-        @attributeBlock()
-        @attributeListBlock()
-        if @currentLex.lexeme isnt ";"
-            throw new Error chalk.red.bold "declaration: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        obj = {}
+        obj['variableIdentifierBlock'] = @variableIdentifierBlock()
+        obj['identifiersListBlock'] = @identifiersListBlock {}
 
-    identifiersListBlock: ()->
+        if @currentLex.lexeme isnt @config.delimiters[4]
+            throw new Error chalk.red.bold "declaration: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
         @scan()
-        if @currentLex.lexeme is ","
+        obj['attributeBlock'] = @attributeBlock()
+        obj['attributeListBlock'] = @attributeListBlock {}
+        if @currentLex.lexeme isnt @config.delimiters[3]
+            throw new Error chalk.red.bold "declaration: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        return obj
+
+    identifiersListBlock: (obj)->
+        @scan()
+        if @currentLex.lexeme is @config.delimiters[5]
             @scan()
-            @variableIdentifierBlock()
-            @identifiersListBlock()
+            obj['variableIdentifierBlock'] = @variableIdentifierBlock()
+            obj['identifiersListBlock'] = @identifiersListBlock identifiersListBlock: {}
+            return obj
 
-    attributeListBlock: ()->
+    attributeListBlock: (obj)->
         @scan()
-        if @currentLex.lexeme isnt ";"
-            @attributeBlock()
-            @attributeListBlock()
+        if @currentLex.lexeme isnt @config.delimiters[3]
+            obj['attributeBlock'] = @attributeBlock()
+            obj['attributeListBlock'] = @attributeListBlock {}
+            return obj
 
     attributeBlock: ()->
         if @config.keywords.indexOf(@currentLex.lexeme) is -1
             throw new Error chalk.red.bold "attribute: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        return @currentLex.lexeme
 
     variableIdentifierBlock: ()->
         @identifierBlock()
+        return @currentLex.lexeme
 
     identifierBlock: ()->
-        @letter @currentLex.lexeme.slice 0, 1
-        @string @currentLex.lexeme.slice 1, @currentLex.lexeme.length
+        obj = {}
+        obj['letter'] = @letter @currentLex.lexeme.slice 0, 1
+        obj['string'] = @string @currentLex.lexeme.slice(1, @currentLex.lexeme.length), {}
+        return obj
 
     letter: (char)->
         if !char.match(/[a-z]/i)
             throw new Error chalk.red.bold "letter: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        return char
 
     digit: (char)->
         if !char.match(/[0-9]/i)
             throw new Error chalk.red.bold "digit: Syntax Error at " + @currentLex.lexeme + " on " + @currentLex.row + ":" + @currentLex.column
+        return char
 
-    string: (str)->
+    string: (str, obj)->
         if str isnt ""
             if parseInt(str)
-                @digit str.slice 0, 1
+                obj['digit'] = @digit str.slice 0, 1
             else
-                @letter str.slice 0, 1
-            @string str.slice 1, str.length
+                obj['letter'] = @letter str.slice 0, 1
+            obj['string'] = {}
+            @string str.slice(1, str.length), obj['string']
+            return obj
