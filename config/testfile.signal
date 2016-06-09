@@ -1,11 +1,12 @@
 PROCEDURE LAB
 ( 
-    TEST1, TEST5, TEST6: SIGNAL;
-    TEST2: INTEGER;
+    TEST1, TEST5, TEST6: SIGNAL INTEGER;
+    TEST2: INTEGER; (* дфыдлвфывьвлдыфт *)
 ); 
 VAR 
     TEST3: INTEGER;
-    TEST4: FLOAT; 
+    TEST4: FLOAT; (* dasdasd 
+    dasd *)
 BEGIN 
 
 END;
