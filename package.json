@@ -14,7 +14,8 @@
   "scripts": {
     "start": "node --stack-size=32000 build/js/app.js",
     "watch": "grunt watch",
-    "clean": "grunt clean"
+    "clean": "grunt clean",
+    "test": "node --stack-size=32000 build/js/test.js"
   },
   "homepage": "https://github.com/vladkampov/SIGNAL-language-transpiler#readme",
   "devDependencies": {

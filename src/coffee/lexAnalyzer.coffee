@@ -32,6 +32,7 @@ class lexAnalyzer
             if text[i] is undefined
                 break
             else
+                pos.column++
                 lastLexeme = @attr.lexemes[@attr.lexemes.length - 1]
 
                 # end comment check
