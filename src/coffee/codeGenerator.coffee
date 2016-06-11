@@ -6,6 +6,7 @@ class codeGenerator
         @stack = []
         @signalFlag = false
         @blockFlag = false
+        @alreadyUsed = []
         @walk @tree
 
     whatIsIt: (object)->
@@ -51,6 +52,7 @@ class codeGenerator
                     @walk value
                     @result += "\nCODE ENDS\n"
                 else if key is "procedureIdentifierBlock"
+                    @alreadyUsed.push value
                     @result += "_" + value + ":\n"
                 else if key is "variableIdentifierBlock"
                     @stack.push value
@@ -75,4 +77,7 @@ class codeGenerator
                     @result += "\n\nadd esp,16\npop ebp\n\nret\n"
                 @walk value
         else if type is "String"
+            if  @alreadyUsed.indexOf(node) > -1
+                throw new Error chalk.red.bold "Semantic Error: " + node + " identifier already used."
+            @alreadyUsed.push node
             return
